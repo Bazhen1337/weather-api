@@ -55,8 +55,6 @@ GET /api/weather?city=Москва&unit=celsius&lang=ru
 
 **Возможные ошибки:**
 
-- `400 Bad Request` - Неверные параметры запроса
-- `404 Not Found` - Город не найден
 - `422 Unprocessable Entity` - Ошибка валидации
 - `500 Internal Server Error` - Ошибка сервера
 
