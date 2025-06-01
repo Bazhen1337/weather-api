@@ -85,8 +85,6 @@ GET /api/location?lat=55.7558&lon=37.6176&unit=fahrenheit
 
 **Возможные ошибки:**
 
-- `400 Bad Request` - Неверные координаты
-- `404 Not Found` - Местоположение не найдено
 - `422 Unprocessable Entity` - Ошибка валидации
 - `500 Internal Server Error` - Ошибка сервера
 
@@ -138,15 +136,6 @@ GET /api/location?lat=55.7558&lon=37.6176&unit=fahrenheit
 }
 ```
 
-**Город не найден (404):**
-```json
-{
-    "success": false,
-    "message": "City not found",
-    "error": "Указанный город не найден"
-}
-```
-
 **Ошибка сервера (500):**
 ```json
 {
@@ -159,7 +148,6 @@ GET /api/location?lat=55.7558&lon=37.6176&unit=fahrenheit
 ## Лимиты и ограничения
 - Максимальная длина названия города: 100 символов
 - Поддерживаемые языки: ru, en и другие (зависит от API OpenWeatherMap)
-- Лимит запросов: 60 запросов в минуту с одного IP
 
 ## Версия API
 Текущая версия: 1.0
