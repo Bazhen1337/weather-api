@@ -59,11 +59,19 @@ class WeatherController extends Controller
             ], 422);
 
         } catch (\Exception $e) {
+            $statusCode = 500;
+            $message = 'Server error';
+
+            if ($e->getMessage() === 'Указанный город не найден') {
+                $statusCode = 404;
+                $message = 'City not found';
+            }
+
             return response()->json([
                 'success' => false,
-                'message' => 'Server error',
+                'message' => $message,
                 'error' => config('app.debug') ? $e->getMessage() : 'Something went wrong',
-            ], 500);
+            ], $statusCode);
         }
     }
 
