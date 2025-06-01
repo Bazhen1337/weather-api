@@ -43,13 +43,13 @@ class Weather extends Model
         ]);
 
         if ($geo_response->failed()) {
-            throw new \Exception('Ошибка при определении местоположения');
+            throw new \Exception('Location error');
         }
 
         $geo_response_data = $geo_response->json();
 
         if (empty($geo_response_data)) {
-            throw new \Exception('Местоположение не найдено');
+            throw new \Exception('Location not found');
         }
 
         return $geo_response_data[0]['local_names'][$lang] ?? $geo_response_data[0]['name'];
@@ -87,11 +87,11 @@ class Weather extends Model
         ]);
 
         if ($weather_response->failed()) {
-            throw new \Exception('Ошибка при запросе к API погоды');
+            throw new \Exception('Error while requesting weather API');
         }
 
         if (isset($weather_response['cod']) && $weather_response['cod'] === '404') {
-            throw new \Exception('указанный город не найден');
+            throw new \Exception('City not found');
         }
 
         return $weather_response->json();
