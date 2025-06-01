@@ -90,10 +90,6 @@ class Weather extends Model
             throw new \Exception('Error while requesting weather API');
         }
 
-        if (isset($weather_response['cod']) && $weather_response['cod'] === '404') {
-            throw new \Exception('City not found');
-        }
-
         return $weather_response->json();
     }
 
