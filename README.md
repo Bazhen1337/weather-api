@@ -11,7 +11,7 @@
 
 ```bash
 # Клонировать репозиторий
-https://github.com/Bazhen1337/weather-api.git
+git clone https://github.com/Bazhen1337/weather-api.git
 cd weather-api
 
 # Установить зависимости
