@@ -7,6 +7,23 @@
 
 `Laravel Framework: 10.48.29`
 
+### Установка
+
+```bash
+# Клонировать репозиторий
+git clone https://github.com/your-repo/weather-api.git
+cd weather-api
+
+# Установить зависимости
+composer install
+
+# Создать файл окружения
+cp .env.example .env
+
+# Сгенерировать ключ приложения
+php artisan key:generate
+```
+
 ## Базовый URL
 `https://ваш-домен/api/`
 
