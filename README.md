@@ -1,66 +1,153 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Документация API Погодного Сервиса
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Базовый URL
+`https://ваш-домен/api/`
 
-## About Laravel
+## Авторизация
+API не требует авторизации.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Endpoints
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Получение погоды по названию города
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**URL:** `/weather`
 
-## Learning Laravel
+**Метод:** `GET`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Параметры:**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Параметр | Тип    | Обязательный | Описание                          | Допустимые значения               |
+|----------|--------|--------------|-----------------------------------|-----------------------------------|
+| city     | string | Да           | Название города                   | Любая строка до 100 символов      |
+| unit     | string | Нет          | Единицы измерения температуры     | `celsius` (по умолчанию), `fahrenheit` |
+| lang     | string | Нет          | Язык ответа                       | `ru` (по умолчанию), другие языки |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Пример запроса:**
+```
+GET /api/weather?city=Москва&unit=celsius&lang=ru
+```
 
-## Laravel Sponsors
+**Успешный ответ (200 OK):**
+```json
+{
+    "success": true,
+    "city": "Москва",
+    "weather": {
+        "temperature": 15.5,
+        "unit": "celsius",
+        "description": "ясно",
+        "icon": "https://openweathermap.org/img/wn/01d@4x.png"
+    },
+    "wind": {
+        "speed": 3.2,
+        "direction": "северо-западный"
+    },
+    "atmosphere": {
+        "pressure": 1012,
+        "humidity": 65
+    },
+    "precipitation": {
+        "probability": 10
+    },
+    "timestamp": "2023-05-15 14:30:45"
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**Возможные ошибки:**
 
-### Premium Partners
+- `400 Bad Request` - Неверные параметры запроса
+- `404 Not Found` - Город не найден
+- `422 Unprocessable Entity` - Ошибка валидации
+- `500 Internal Server Error` - Ошибка сервера
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 2. Получение погоды по координатам
 
-## Contributing
+**URL:** `/location`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Метод:** `GET`
 
-## Code of Conduct
+**Параметры:**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Параметр | Тип    | Обязательный | Описание                          |
+|----------|--------|--------------|-----------------------------------|
+| lat      | float  | Да           | Широта                            |
+| lon      | float  | Да           | Долгота                           |
+| unit     | string | Нет          | Единицы измерения температуры     |
+| lang     | string | Нет          | Язык ответа                       |
 
-## Security Vulnerabilities
+**Пример запроса:**
+```
+GET /api/location?lat=55.7558&lon=37.6176&unit=fahrenheit
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Успешный ответ (200 OK):**
+Аналогичен ответу от `/weather`, но город определяется автоматически.
 
-## License
+**Возможные ошибки:**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- `422 Unprocessable Entity` - Ошибка валидации
+- `500 Internal Server Error` - Ошибка сервера
+
+## Объекты ответа
+
+### Погодные данные
+```json
+{
+    "temperature": 15.5,
+    "unit": "celsius",
+    "description": "ясно",
+    "icon": "URL иконки"
+}
+```
+
+### Ветер
+```json
+{
+    "speed": 3.2,
+    "direction": "северо-западный"
+}
+```
+
+### Атмосфера
+```json
+{
+    "pressure": 1012,
+    "humidity": 65
+}
+```
+
+### Осадки
+```json
+{
+    "probability": 10
+}
+```
+
+## Примеры ошибок
+
+**Ошибка валидации (422):**
+```json
+{
+    "success": false,
+    "message": "Validation error",
+    "errors": {
+        "city": ["Поле city обязательно для заполнения."]
+    }
+}
+```
+
+**Ошибка сервера (500):**
+```json
+{
+    "success": false,
+    "message": "Server error",
+    "error": "Error while requesting weather API"
+}
+```
+
+## Лимиты и ограничения
+- Максимальная длина названия города: 100 символов
+- Поддерживаемые языки: ru, en и другие (зависит от API OpenWeatherMap)
+
+## Версия API
+Текущая версия: 1.0
