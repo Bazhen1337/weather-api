@@ -129,7 +129,7 @@ GET /api/location?lat=55.7558&lon=37.6176&unit=fahrenheit
     "success": false,
     "message": "Validation error",
     "errors": {
-        "city": ["Поле city обязательно для заполнения."]
+        "city": ["The city field is required."]
     }
 }
 ```
